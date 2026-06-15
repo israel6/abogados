@@ -1,0 +1,53 @@
+@import './styles/tokens.css';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 500;
+}
+
+p {
+  color: var(--color-text-muted);
+}
+
+button {
+  font-family: inherit;
+}
+
+::selection {
+  background: rgba(26, 47, 92, 0.15);
+  color: var(--color-text);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-cta);
+  outline-offset: 3px;
+}

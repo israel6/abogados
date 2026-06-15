@@ -1,0 +1,220 @@
+.lawyers-container,
+.lawyers-header {
+  display: none;
+}
+
+.lawyers-main {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lawyer-list {
+  width: 100%;
+}
+
+.lawyer-filters {
+  background: var(--color-surface);
+  padding: var(--space-6);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-8);
+  border: 1px solid var(--color-border-light);
+}
+
+.lawyer-filters h3 {
+  margin: 0 0 var(--space-4) 0;
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: var(--text-h4);
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.filter-btn {
+  padding: 0.5rem 1rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 100px;
+  cursor: pointer;
+  font-size: var(--text-caption);
+  font-weight: 600;
+  transition: all var(--transition-fast);
+  color: var(--color-text-muted);
+}
+
+.filter-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.filter-btn.btn-ghost {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.filter-btn.btn-ghost.active {
+  background: var(--color-primary-deep);
+  color: #ffffff;
+  border-color: var(--color-primary-deep);
+}
+
+.lawyers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-6);
+}
+
+.lawyer-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border-light);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.lawyer-image {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.lawyer-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.lawyer-card:hover .lawyer-image img {
+  transform: scale(1.04);
+}
+
+.lawyer-info {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.lawyer-card h3 {
+  margin: 0 0 var(--space-2) 0;
+  font-family: var(--font-heading);
+  color: var(--color-text);
+  font-size: var(--text-h4);
+}
+
+.specialization {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  background: rgba(26, 47, 92, 0.08);
+  border-radius: var(--radius-sm);
+  color: var(--color-primary);
+  font-size: var(--text-eyebrow);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-3);
+  width: fit-content;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.rating-stars {
+  color: var(--color-cta);
+  font-size: var(--text-caption);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.rating-number {
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  font-weight: 600;
+}
+
+.lawyer-card .bio {
+  margin: var(--space-2) 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  line-height: var(--leading-normal);
+  flex-grow: 1;
+}
+
+.lawyer-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--color-border-light);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.stat .label {
+  font-size: var(--text-eyebrow);
+  color: var(--color-text-subtle);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stat .value {
+  font-size: var(--text-body-sm);
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.btn-contact {
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--color-cta);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-caption);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color var(--transition);
+}
+
+.btn-contact:hover {
+  background: var(--color-cta-hover);
+}
+
+.empty-state,
+.loading,
+.error-message {
+  text-align: center;
+  padding: var(--space-10);
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-light);
+  color: var(--color-text-muted);
+}
+
+.error-message {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+@media (max-width: 768px) {
+  .lawyers-grid {
+    grid-template-columns: 1fr;
+  }
+}
