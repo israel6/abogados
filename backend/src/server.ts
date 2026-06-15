@@ -16,18 +16,26 @@ import { startScheduler } from '@services/notificationQueueService'
 
 const app: Express = express()
 const PORT = process.env.PORT || 3000
+const isVercel = Boolean(process.env.VERCEL)
+
+const corsOrigins = [
+  process.env.APP_URL,
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
+  process.env.VERCEL_BRANCH_URL,
+].filter(Boolean) as string[]
 
 // Middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors({
-  origin: process.env.APP_URL || 'http://localhost:5173',
+  origin: corsOrigins.length > 0 ? corsOrigins : true,
   credentials: true,
 }))
 app.use(requestLogger)
 
-// Health check
-app.get('/health', (_req: Request, res: Response) => {
+const api = express.Router()
+
+api.get('/health', (_req: Request, res: Response) => {
   res.json({
     status: 'ok',
     database: isDatabaseAvailable() ? 'connected' : 'disconnected',
@@ -35,15 +43,16 @@ app.get('/health', (_req: Request, res: Response) => {
   })
 })
 
-// API Routes
-app.use('/auth', authRoutes)
-app.use('/appointments', appointmentRoutes)
-app.use('/payments', paymentRoutes)
-app.use('/blog', blogRoutes)
-app.use('/lawyers', lawyerRoutes)
-app.use('/admin', adminRoutes)
-app.use('/notifications', notificationRoutes)
-app.use('/ai', aiRoutes)
+api.use('/auth', authRoutes)
+api.use('/appointments', appointmentRoutes)
+api.use('/payments', paymentRoutes)
+api.use('/blog', blogRoutes)
+api.use('/lawyers', lawyerRoutes)
+api.use('/admin', adminRoutes)
+api.use('/notifications', notificationRoutes)
+api.use('/ai', aiRoutes)
+
+app.use('/api', api)
 
 // Error handling
 app.use(errorHandler)
@@ -53,26 +62,28 @@ app.use((_req: Request, res: Response) => {
   res.status(404).json({ error: 'Route not found' })
 })
 
-// Initialize and start server
-const startServer = async () => {
-  // Start HTTP server first so health check works immediately
+const bootDatabase = async () => {
+  try {
+    await initializeDatabase()
+    if (!isVercel) {
+      startScheduler(60_000)
+      console.log('✓ Notification queue scheduler started')
+    }
+  } catch (error) {
+    console.error('✗ Database unavailable — running in limited mode (no DB queries will work)')
+    if (!isVercel) {
+      console.error('  → Habilita TCP/IP en SQL Server Configuration Manager y reinicia el servicio')
+    }
+  }
+}
+
+void bootDatabase()
+
+if (!isVercel) {
   app.listen(PORT, () => {
     console.log(`✓ Server running on http://localhost:${PORT}`)
     console.log(`✓ Environment: ${process.env.NODE_ENV}`)
   })
-
-  // Then connect to DB (non-blocking startup)
-  try {
-    await initializeDatabase()
-
-    // Start notification queue scheduler only when DB is available
-    startScheduler(60_000)
-    console.log('✓ Notification queue scheduler started')
-  } catch (error) {
-    console.error('✗ Database unavailable — running in limited mode (no DB queries will work)')
-    console.error('  → Habilita TCP/IP en SQL Server Configuration Manager y reinicia el servicio')
-    console.error('  → Luego reinicia el backend con: npm run dev')
-  }
 }
 
-startServer()
+export default app
